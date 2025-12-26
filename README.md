@@ -1,0 +1,17 @@
+A simple Ansible playbook to deploy a Minecraft Modpack onto a Linux (tested with Oracle Linux 9) machine.
+
+Inventory should include authentication, modpack, and optionally port for each host. New hosts will need to be added to the minecraft group in the inventory/hosts.yaml file.
+Minecraft role takes Modpacks in the form of directories with mods, configs, a populated variables.txt, and any other needed files.
+The only variables that should need to be changed in the variables.txt is the modloader, modloader_version, minecraft_version, and java_args. Changing any others may result in the server not installing correctly or not behaving correctly as a daemon.
+The server.properties is shared across all modpacks, if any fields are desired to be changed on a per pack basis, they will need to be added to the host configuration and server.properties.j2 template.
+The Minecraft server is ran in a tmux session named the same as the modpack name.
+The Minecraft server uses Jabba to source its Java rather than relying on a system Java.
+The Minecraft server will be installed as a systemd daemon and will auto restart in the event of a crash.
+
+When executing the playbook, ensure the whole repository is not world writable else the ansible.cfg file will not be read. (i.e. chmod 770 on the directory)
+
+References:
+https://docs.ansible.com/projects/ansible/latest/getting_started/index.html 
+https://blog.kywa.io/tag/mineops/ 
+https://serverpackcreator.de/#/ 
+

@@ -1,0 +1,8 @@
+---
+- name: Stop Minecraft
+  hosts: minecraft
+  tasks:
+    - name: Stop Minecraft
+      ansible.builtin.import_role:
+        name: minecraft
+        tasks_from: stop_minecraft

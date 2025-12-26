@@ -1,0 +1,8 @@
+---
+- name: Minecraft Setup
+  hosts: minecraft
+  tasks:
+    - name: Install Minecraft
+      ansible.builtin.import_role:
+        name: minecraft
+        tasks_from: install_minecraft

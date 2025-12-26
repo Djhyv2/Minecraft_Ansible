@@ -1,0 +1,13 @@
+- name: Run Server
+  ansible.builtin.systemd_service:
+    name: '{{ modpack }}'
+    state: started
+    enabled: true
+    scope: user
+- name: Verify Server
+  ansible.builtin.shell: 
+    cmd: tail ~/{{ modpack }}/logs/latest.log
+  register: server_status
+  until: server_status.stdout.find('Done') != -1
+  retries: 12
+  delay: 20

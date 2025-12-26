@@ -1,0 +1,16 @@
+[Unit] 
+Description=Modded {{ modpack }} Minecraft Server
+After=local-fs.target network.target
+
+[Service]
+WorkingDirectory=/home/{{ ansible_user }}/{{ modpack }}
+Nice=5
+Restart=always
+Type=forking
+
+ExecStart=/usr/bin/tmux new -d -s {{ modpack }} ~/{{ modpack }}/start.sh
+ExecStop=/usr/bin/tmux send -t {{ modpack }} 'Stop' Enter
+ExecStop=/bin/bash -c "while ps -p $MAINPID > /dev/null; do /bin/sleep 1; done"
+
+[Install]
+WantedBy=default.target
