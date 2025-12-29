@@ -1,0 +1,3 @@
+minecraft_settings:
+  allow_nether: false
+  spawn-protection: 512

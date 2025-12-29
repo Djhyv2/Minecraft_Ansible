@@ -1,0 +1,4 @@
+default_minecraft_settings:
+  server_port: 25565
+  allow_nether: true
+  spawn_protection: 0

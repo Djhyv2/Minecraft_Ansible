@@ -1,10 +1,10 @@
 - name: Check if Server Exists
   ansible.builtin.stat:
-    path: ~/.config/systemd/user/{{ modpack }}.service
+    path: ~/.config/systemd/user/{{ minecraft_settings.modpack }}.service
   register: server_exists
 - name: Stop Server
   ansible.builtin.systemd_service:
-    name: '{{ modpack }}'
+    name: '{{ minecraft_settings.modpack }}'
     state: stopped
     scope: user
   when: server_exists.stat.exists == true

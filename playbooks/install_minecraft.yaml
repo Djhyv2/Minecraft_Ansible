@@ -6,3 +6,4 @@
       ansible.builtin.import_role:
         name: minecraft
         tasks_from: install_minecraft
+        public: true

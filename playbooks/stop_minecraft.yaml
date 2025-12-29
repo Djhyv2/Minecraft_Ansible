@@ -6,3 +6,4 @@
       ansible.builtin.import_role:
         name: minecraft
         tasks_from: stop_minecraft
+        public: true
