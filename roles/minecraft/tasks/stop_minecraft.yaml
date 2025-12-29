@@ -6,5 +6,6 @@
   ansible.builtin.systemd_service:
     name: '{{ minecraft_settings.modpack }}'
     state: stopped
+    enabled: false
     scope: user
   when: server_exists.stat.exists == true

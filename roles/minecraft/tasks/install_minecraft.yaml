@@ -39,7 +39,7 @@
 - name: Load Server Properties
   ansible.builtin.template:
     src: server.properties.j2
-    dest: ~/{{ minecraft_settings.modpack }}
+    dest: ~/{{ minecraft_settings.modpack }}/server.properties
 - name: Make Service Directory
   ansible.builtin.file:
     path: ~/.config/systemd/user

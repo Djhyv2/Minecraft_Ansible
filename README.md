@@ -4,7 +4,7 @@ A simple Ansible playbook to deploy a Minecraft Modpack onto a Linux (tested wit
 Inventory should include authentication, modpack, and optionally port for each host. New hosts will need to be added to the minecraft group in the inventory/hosts.yaml file.
 
 Minecraft role includes the shared config used across modpacks and a set of default_minecraft_settings that takes a lower precedence than modpack or host specific settings.
-Additional roles exist for Modpacks in the form of directories with mods, configs, a populated variables.txt, and any other needed files.
+Additional roles exist for Modpacks in the form of directories with mods, configs, a populated variables.txt, and any other needed files. Modpack roles have a default_minecraft_modpack_settings var that is higher precedence than the overall default, but lower precedence than host or group vars.
 
 The only variables that should need to be changed in the variables.txt is the modloader, modloader_version, minecraft_version, recommended_java_version and java_args. Changing any others may result in the server not installing correctly or not behaving correctly as a daemon.
 
