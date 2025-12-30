@@ -3,10 +3,12 @@
     name: '{{ minecraft_settings.modpack }}'
     state: started
     enabled: true
-    scope: user
+  become: true
+  become_method: su
+  become_exe: sudo su -
 - name: Verify Server
   ansible.builtin.shell: 
-    cmd: tail ~/{{ minecraft_settings.modpack }}/logs/latest.log -n 500
+    cmd: tail /usr/local/bin/{{ minecraft_settings.modpack }}/logs/latest.log -n 500
   register: server_status
   until: server_status.stdout.find('Done') != -1
   retries: 12

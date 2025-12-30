@@ -4,7 +4,7 @@
     public: true
 - name: Overwrite Default Variables
   ansible.builtin.set_fact:
-    minecraft_settings: '{{ default_minecraft_settings | ansible.builtin.combine(minecraft_settings | default([])) }}'
+    minecraft_settings: '{{ default_minecraft_settings | ansible.builtin.combine(default_minecraft_modpack_settings | default([]), minecraft_settings | default([])) }}'
 - name: Stop Minecraft
   ansible.builtin.import_role: 
     name: minecraft
@@ -30,39 +30,42 @@
   become: true
 - name: Load Modpack
   ansible.posix.synchronize:
-    dest: ~/{{ minecraft_settings.modpack }}
+    dest: /usr/local/bin/{{ minecraft_settings.modpack }}
     src: '{{ role_path }}/../{{ minecraft_settings.modpack }}/files/'
+  become: true
 - name: Load Shared Components
   ansible.posix.synchronize:
-    dest: ~/{{ minecraft_settings.modpack }}
+    dest: /usr/local/bin/{{ minecraft_settings.modpack }}
     src: .
+  become: true
 - name: Load Server Properties
   ansible.builtin.template:
     src: server.properties.j2
-    dest: ~/{{ minecraft_settings.modpack }}/server.properties
-- name: Make Service Directory
-  ansible.builtin.file:
-    path: ~/.config/systemd/user
-    state: directory
+    dest: /usr/local/bin/{{ minecraft_settings.modpack }}/server.properties
+  become: true
 - name: Load Minecraft Service
   ansible.builtin.template:
     src: minecraft.service.j2
-    dest: ~/.config/systemd/user/{{ minecraft_settings.modpack }}.service
+    dest: /etc/systemd/system/{{ minecraft_settings.modpack }}.service
+  become: true
 - name: Ensure Server Won't Run
   ansible.builtin.lineinfile:
     line: RUN_SERVER=false
     regexp: '^RUN_SERVER='
-    path: ~/{{ minecraft_settings.modpack }}/variables.txt
+    path: /usr/local/bin/{{ minecraft_settings.modpack }}/variables.txt
+  become: true
 - name: Install Server Dependencies
   ansible.builtin.expect:
-    command: bash /home/{{ ansible_user }}/{{ minecraft_settings.modpack }}/start.sh
+    command: bash /usr/local/bin/{{ minecraft_settings.modpack }}/start.sh
     responses: 
       .*I agree.*: "I agree"
+  become: true
 - name: Allow Server to Run
   ansible.builtin.lineinfile:
     line: RUN_SERVER=true
     regexp: '^RUN_SERVER='
-    path: ~/{{ minecraft_settings.modpack }}/variables.txt
+    path: /usr/local/bin/{{ minecraft_settings.modpack }}/variables.txt
+  become: true
 - name: Start Minecraft
   ansible.builtin.import_role: 
     name: minecraft

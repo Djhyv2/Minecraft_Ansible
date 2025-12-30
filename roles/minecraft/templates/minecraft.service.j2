@@ -3,14 +3,15 @@ Description=Modded {{ minecraft_settings.modpack }} Minecraft Server
 After=local-fs.target network.target
 
 [Service]
-WorkingDirectory=/home/{{ ansible_user }}/{{ minecraft_settings.modpack }}
+WorkingDirectory=/usr/local/bin/{{ minecraft_settings.modpack }}
 Nice=5
 Restart=on-failure
 Type=forking
+User=opc
 
-ExecStart=/usr/bin/tmux new -d -s {{ minecraft_settings.modpack }} ~/{{ minecraft_settings.modpack }}/start.sh
-ExecStop=/usr/bin/tmux send -t {{ minecraft_settings.modpack }} 'Stop' Enter
+ExecStart=/bin/bash -c "/usr/bin/tmux new -d -s {{ minecraft_settings.modpack }} /usr/local/bin/{{ minecraft_settings.modpack }}/start.sh"
+ExecStop=/bin/bash -c "/usr/bin/tmux send -t {{ minecraft_settings.modpack }} 'stop' Enter"
 ExecStop=/bin/bash -c "while ps -p $MAINPID > /dev/null; do /bin/sleep 1; done"
 
 [Install]
-WantedBy=default.target
+WantedBy=default.target 
